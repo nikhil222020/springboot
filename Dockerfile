@@ -1,3 +1,7 @@
-From openjdk:8
-copy ./target/employee-producer-0.0.1-SNAPSHOT.jar employee-producer-0.0.1-SNAPSHOT.jar
-CMD ["java","-jar","employee-producer-0.0.1-SNAPSHOT.jar"]
+FROM maven:3-alpine
+COPY pom.xml pipeline/
+COPY src/ pipeline/src/
+WORKDIR pipeline/
+RUN mvn clean install
+EXPOSE 8090
+ENTRYPOINT [ "java", "-jar", "/pipeline/target/employee-producer-0.0.1-SNAPSHOT.jar"]
